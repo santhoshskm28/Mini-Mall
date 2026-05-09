@@ -43,7 +43,7 @@ All buttons and the global navigation logo utilize magnetic physics, providing a
 
 This project was architected and refined using an advanced AI-pair programming workflow:
 - **Antigravity IDE**: Primary environment for architectural stabilization.
-- **Cursor AI & Gemini**: Utilized for complex GSAP timeline sequencing and luxury CSS token generation.
+- **Cursor AI & Gemini**: Utilized for complex GSAP timelines sequencing and luxury CSS token generation.
 - **Claude**: Instrumental in refining the creative copy and storytelling flow.
 
 ---
