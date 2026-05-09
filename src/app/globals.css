@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), "Inter", "Outfit", sans-serif;
+  --font-display: "Outfit", "Inter", sans-serif;
+  
+  --color-accent: #ffffff;
+  --color-muted: #888888;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-glass: rgba(255, 255, 255, 0.03);
+  
+  --shadow-luxury: 0 20px 80px -20px rgba(0, 0, 0, 0.9);
+  --shadow-glow: 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --accent: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: crosshair;
+}
+
+/* Lenis Smooth Scroll Fix */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Cinematic Grain Overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Custom Selection */
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Glassmorphism Evolution */
+.glass {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Cinematic Typography */
+.text-glow {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+.text-mask {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(to bottom, #ffffff 0%, #888888 100%);
+}
+
+/* Cinematic Overlays */
+.vignette {
+  background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+}
+
+.gradient-overlay {
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 100%);
+}
