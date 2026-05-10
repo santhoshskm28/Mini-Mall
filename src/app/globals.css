@@ -112,3 +112,29 @@ body::after {
 .gradient-overlay {
   background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.9) 100%);
 }
+
+/* Advanced 3D Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-3000 {
+  perspective: 3000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.translate-z-50 {
+  transform: translateZ(50px);
+}
+
+.animate-spin-slow {
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

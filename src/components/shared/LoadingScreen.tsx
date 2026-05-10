@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThreeBackground } from "../cinematic/ThreeBackground";
 
 export const LoadingScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -31,9 +32,12 @@ export const LoadingScreen = () => {
           transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
           className="fixed inset-0 z-[1000] bg-black flex flex-col items-center justify-center overflow-hidden"
         >
+          {/* 3D Cinematic Background */}
+          <ThreeBackground />
+
           {/* Ambient Cinematic Pulse */}
           <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.1, 0.05] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none" 
           />
@@ -45,16 +49,16 @@ export const LoadingScreen = () => {
                  initial={{ y: "100%", skewY: 10 }}
                  animate={{ y: 0, skewY: 0 }}
                  transition={{ duration: 1.2, ease: "circOut" }}
-                 className="text-4xl md:text-6xl font-display font-bold tracking-tighter"
+                 className="text-5xl md:text-8xl font-display font-bold tracking-tighter"
                >
                  MALL OF <span className="text-white/30 italic">AMERICA</span>
                </motion.div>
             </div>
 
             {/* Progress Bar System */}
-            <div className="w-64 h-[1px] bg-white/5 relative overflow-hidden">
+            <div className="w-64 h-[2px] bg-white/5 relative overflow-hidden rounded-full">
                <motion.div 
-                 className="absolute inset-0 bg-white shadow-glow"
+                 className="absolute inset-0 bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)]"
                  initial={{ scaleX: 0 }}
                  animate={{ scaleX: progress / 100 }}
                  transition={{ duration: 0.5 }}
@@ -65,9 +69,10 @@ export const LoadingScreen = () => {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-[10px] uppercase tracking-[0.8em] text-white/20 font-bold"
+              transition={{ delay: 0.5 }}
+              className="text-[10px] uppercase tracking-[1em] text-white/20 font-bold ml-4"
             >
-              Initializing Experience
+              Experience Initializing
             </motion.div>
           </div>
 

@@ -45,19 +45,21 @@ const zones = [
 
 export const InteractiveMap = () => {
   const [activeZone, setActiveZone] = useState(zones[0]);
-  const infoRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!infoRef.current) return;
+      if (!mapRef.current) return;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
-      const x = (clientX - innerWidth / 2) / 50;
-      const y = (clientY - innerHeight / 2) / 50;
-      gsap.to(infoRef.current, {
-        x: x,
-        y: y,
-        duration: 1,
+      const rotateX = (clientY / innerHeight - 0.5) * 20;
+      const rotateY = (clientX / innerWidth - 0.5) * -20;
+      
+      gsap.to(mapRef.current, {
+        rotateX: rotateX,
+        rotateY: rotateY,
+        duration: 1.5,
         ease: "power2.out"
       });
     };
@@ -67,25 +69,51 @@ export const InteractiveMap = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-black py-48 px-6 flex flex-col items-center justify-center overflow-hidden">
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-        {/* Left: Interactive Area */}
-        <div className="relative aspect-square w-full glass rounded-[4rem] overflow-hidden group shadow-luxury">
-          {/* Ambient Glow */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
-          
-          {/* Content Preview */}
+    <section ref={containerRef} id="map" className="relative min-h-screen bg-black py-64 px-6 flex flex-col items-center justify-center overflow-hidden perspective-3000">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+        {/* Left: Pseudo-3D Interactive Map */}
+        <div 
+          ref={mapRef}
+          className="relative aspect-square w-full glass rounded-[5rem] overflow-hidden group shadow-luxury preserve-3d"
+        >
+          {/* Animated SVG Connections */}
+          <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none opacity-20">
+             <motion.path
+               d="M 40% 25% Q 50% 45% 65% 45%"
+               fill="transparent"
+               stroke="white"
+               strokeWidth="1"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: 1 }}
+               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+             />
+             <motion.path
+               d="M 65% 45% Q 50% 60% 35% 65%"
+               fill="transparent"
+               stroke="white"
+               strokeWidth="1"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: 1 }}
+               transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: 1 }}
+             />
+          </svg>
+
+          {/* Background Media with Motion Blur */}
           <AnimatePresence mode="wait">
-            <motion.img
+            <motion.div
               key={activeZone.id}
-              src={activeZone.image}
-              alt={activeZone.title}
-              initial={{ opacity: 0, scale: 1.15 }}
-              animate={{ opacity: 0.4, scale: 1.05 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 1.2, ease: "circOut" }}
-              className="absolute inset-0 w-full h-full object-cover grayscale"
-            />
+              initial={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
+              animate={{ opacity: 0.5, scale: 1.05, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+              transition={{ duration: 1.5, ease: "circOut" }}
+              className="absolute inset-0"
+            >
+               <img
+                 src={activeZone.image}
+                 alt={activeZone.title}
+                 className="w-full h-full object-cover grayscale"
+               />
+            </motion.div>
           </AnimatePresence>
 
           {/* Hotspots */}
@@ -94,54 +122,68 @@ export const InteractiveMap = () => {
               <button
                 key={zone.id}
                 onMouseEnter={() => setActiveZone(zone)}
-                className="absolute group/hotspot outline-none"
+                className="absolute group/hotspot translate-z-50"
                 style={{ top: zone.pos.top, left: zone.pos.left }}
               >
                 <div className={cn(
-                  "relative w-10 h-10 flex items-center justify-center transition-all duration-700",
+                  "relative w-12 h-12 flex items-center justify-center transition-all duration-700",
                   activeZone.id === zone.id ? "scale-150" : "scale-100"
                 )}>
                   <div className={cn(
-                    "absolute inset-0 rounded-full animate-ping opacity-20",
-                    activeZone.id === zone.id ? "bg-white" : "bg-white/30"
+                    "absolute inset-0 rounded-full animate-pulse opacity-20",
+                    activeZone.id === zone.id ? "bg-white scale-150" : "bg-white/30"
                   )} />
                   <div className={cn(
                     "w-4 h-4 rounded-full transition-all duration-700 shadow-glow",
                     activeZone.id === zone.id ? "bg-white scale-125" : "bg-white/40"
                   )} />
-                  
-                  {/* Subtle Label on Hover */}
-                  <div className="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover/hotspot:opacity-100 transition-opacity duration-500 pointer-events-none">
-                     <span className="text-[10px] uppercase tracking-widest font-bold text-white/60">{zone.title}</span>
-                  </div>
                 </div>
               </button>
             ))}
           </div>
 
-          <div className="absolute bottom-12 left-12 z-20">
-             <span className="text-[10px] uppercase tracking-[0.6em] font-bold text-white/30">Interactive Platform Explorer</span>
+          <div className="absolute bottom-16 left-16 z-20">
+             <span className="text-[10px] uppercase tracking-[1em] font-bold text-white/30">Platform Explorer — V1.0</span>
           </div>
         </div>
 
         {/* Right: Information */}
-        <div ref={infoRef} className="flex flex-col justify-center lg:pl-12">
+        <div className="flex flex-col justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeZone.id}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -50, filter: "blur(10px)" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h2 className="text-sm uppercase tracking-[0.8em] text-white/30 mb-8 font-bold">The Destination</h2>
-              <h3 className="text-6xl md:text-8xl font-display font-bold mb-10 leading-[0.9] tracking-tighter text-glow">{activeZone.title}</h3>
-              <p className="text-2xl text-white/50 leading-relaxed mb-16 max-w-lg font-light">{activeZone.desc}</p>
+              <motion.span 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-xs uppercase tracking-[0.8em] text-white/30 mb-12 block font-bold"
+              >
+                The Destination Platform
+              </motion.span>
+              <h3 className="text-7xl md:text-9xl font-display font-bold mb-12 leading-[0.85] tracking-tighter text-glow">
+                 {activeZone.title.split(" ").map((w, i) => (
+                   <span key={i} className={i === 1 ? "text-white/30 italic" : ""}>{w} </span>
+                 ))}
+              </h3>
+              <p className="text-3xl text-white/40 leading-tight mb-20 max-w-xl font-light italic">"{activeZone.desc}"</p>
               
-              <div className="flex gap-6 items-center">
-                <div className="h-[2px] w-16 bg-white rounded-full" />
-                <div className="h-[1px] w-6 bg-white/20 rounded-full" />
-                <div className="h-[1px] w-6 bg-white/20 rounded-full" />
+              <div className="flex items-center gap-12">
+                 <Button variant="primary" size="lg">Explore Zone</Button>
+                 <div className="flex gap-4">
+                    {zones.map((z) => (
+                      <div 
+                        key={z.id}
+                        className={cn(
+                          "w-2 h-2 rounded-full transition-all duration-500",
+                          activeZone.id === z.id ? "bg-white w-8" : "bg-white/20"
+                        )}
+                      />
+                    ))}
+                 </div>
               </div>
             </motion.div>
           </AnimatePresence>

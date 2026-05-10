@@ -13,25 +13,26 @@ The platform is built on the principle of **"Monolithic Elegance"**. We treat th
 
 - **Framework**: Next.js 15 (App Router) with TypeScript for type-safe, enterprise-grade scalability.
 - **Motion Engine**: A hybrid system of **GSAP (ScrollTrigger)** for complex scroll-based pinning and **Framer Motion** for micro-interactions and magnetic physics.
+- **3D Graphics**: **React Three Fiber (R3F)** for subtle ambient depth and cinematic light trails.
 - **Styling**: Tailwind CSS with custom design tokens for grain overlays, luxury glass, and cinematic vignettes.
 - **Performance**: Dynamic imports, optimized asset pipelines, and Lenis smooth scrolling for hardware-accelerated fluid motion.
 
 ## 🚀 Elite Features
 
-### 1. Cinematic Preloader
-A Netflix-inspired entrance experience featuring motion typography reveals and ambient gradient pulses, ensuring the user is emotionally grounded before the experience begins.
+### 1. Cinematic Preloader (R3F Integrated)
+A Netflix-inspired entrance experience featuring a **3D Floating Core** and light trails, motion typography reveals, and ambient pulses, ensuring immediate sensory immersion.
 
-### 2. Immersive Hero
-A full-screen sensory experience with simulated audio-reactive visualizations, deep camera parallax, and oversized luxury typography.
+### 2. Immersive Hero & Global Cursor
+A full-screen sensory experience with **Dynamic Mouse Parallax**, floating particle systems, and a **Global Cursor Glow** that interacts with the obsidian environment.
 
-### 3. Interactive Destination Map
-A pseudo-3D exploration tool allowing partners to visualize zones of impact, with dynamic media switching and glowing pulse interactions.
+### 3. Interactive Destination Map (Pseudo-3D)
+A **3,000px Perspective** exploration tool featuring **Animated SVG Data Paths**, hover hotspots, and motion-blur media transitions.
 
 ### 4. Retail Horizontal Storytelling
-A non-linear storytelling module using GSAP pinning to showcase luxury brands and experiential retail opportunities in a cinematic film-strip format.
+A non-linear storytelling module using **Kinetic Typography** and **Velocity-based Skewing** to showcase luxury brands in a cinematic horizontal strip.
 
-### 5. Magnetic UI System
-All buttons and the global navigation logo utilize magnetic physics, providing a premium "gravitational" feel to every click.
+### 5. Magnetic UI & Enterprise Analytics
+All buttons utilize magnetic physics. The partnership module features **Animated Enterprise UI** with mini-charts and floating analytics dashboards to demonstrate economic impact.
 
 ## 📈 Performance Strategy
 
@@ -43,7 +44,7 @@ All buttons and the global navigation logo utilize magnetic physics, providing a
 
 This project was architected and refined using an advanced AI-pair programming workflow:
 - **Antigravity IDE**: Primary environment for architectural stabilization.
-- **Cursor AI & Gemini**: Utilized for complex GSAP timelines sequencing and luxury CSS token generation.
+- **Cursor AI & Gemini**: Utilized for complex GSAP timeline sequencing and luxury CSS token generation.
 - **Claude**: Instrumental in refining the creative copy and storytelling flow.
 
 ---

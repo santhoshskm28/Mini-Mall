@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import { GlobalCursor } from "@/components/shared/GlobalCursor";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
     <html lang="en" className="dark h-full antialiased">
       <body className={`${inter.variable} ${outfit.variable} font-sans bg-black text-white selection:bg-white selection:text-black`}>
         <SmoothScrollProvider>
+          <GlobalCursor />
           {children}
         </SmoothScrollProvider>
       </body>

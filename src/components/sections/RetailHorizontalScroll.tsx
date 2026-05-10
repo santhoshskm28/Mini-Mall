@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useVelocity, useSpring } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
@@ -36,6 +36,18 @@ const items = [
 export const RetailHorizontalScroll = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: triggerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const scrollVelocity = useVelocity(scrollYProgress);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+  
+  const skew = useTransform(smoothVelocity, [-0.5, 0.5], [-5, 5]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -67,7 +79,7 @@ export const RetailHorizontalScroll = () => {
   }, []);
 
   return (
-    <div ref={triggerRef} className="overflow-hidden">
+    <div ref={triggerRef} id="retail" className="overflow-hidden">
       <div
         ref={sectionRef}
         className="relative h-screen w-[400vw] flex flex-row items-center"
@@ -77,7 +89,7 @@ export const RetailHorizontalScroll = () => {
             key={index}
             className="h-screen w-screen flex-shrink-0 relative overflow-hidden group"
           >
-            {/* Background Image */}
+            {/* Background Image with Masked Reveal */}
             <div className="absolute inset-0 z-0 overflow-hidden">
               <motion.img
                 initial={{ scale: 1.2 }}
@@ -90,8 +102,11 @@ export const RetailHorizontalScroll = () => {
               <div className={cn("absolute inset-0 bg-gradient-to-r via-black/80 to-black", item.color)} />
             </div>
 
-            {/* Content */}
-            <div className="relative z-10 h-full w-full flex flex-col items-start justify-center px-12 md:px-32">
+            {/* Kinetic Content */}
+            <motion.div 
+              style={{ skewX: skew }}
+              className="relative z-10 h-full w-full flex flex-col items-start justify-center px-12 md:px-32"
+            >
               <div className="overflow-hidden mb-6">
                 <motion.span 
                   initial={{ y: "100%" }}
@@ -108,10 +123,10 @@ export const RetailHorizontalScroll = () => {
                   initial={{ y: "100%", skewY: 5 }}
                   whileInView={{ y: 0, skewY: 0 }}
                   transition={{ duration: 1, ease: "circOut", delay: 0.1 }}
-                  className="text-7xl md:text-[12rem] font-display font-bold leading-[0.85] tracking-tighter"
+                  className="text-7xl md:text-[14rem] font-display font-bold leading-[0.8] tracking-tighter"
                 >
                   {item.title.split(" ").map((word, i) => (
-                    <span key={i} className={cn(i % 2 !== 0 && "text-white/10")}>{word} </span>
+                    <span key={i} className={cn(i % 2 !== 0 && "text-white/10")}>{word}<br className="md:hidden" /> </span>
                   ))}
                 </motion.h2>
               </div>
@@ -120,23 +135,31 @@ export const RetailHorizontalScroll = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.3 }}
-                className="text-2xl md:text-5xl font-light text-white/50 max-w-3xl"
+                className="text-2xl md:text-5xl font-light text-white/50 max-w-4xl"
               >
                 {item.subtitle}
               </motion.p>
               
-              <div className="mt-16 overflow-hidden">
-                 <div className="h-[2px] w-48 bg-white/10 relative">
+              <div className="mt-24 flex items-center gap-12">
+                 <Button variant="primary">Discover Space</Button>
+                 <div className="h-[1px] w-48 bg-white/10 relative">
                     <div className="absolute inset-0 bg-white origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-1000" />
                  </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Cinematic Corner Info */}
-            <div className="absolute bottom-12 left-12 md:left-24 z-20 flex items-center gap-4">
-               <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold">MOA</div>
-               <div className="h-[1px] w-12 bg-white/10" />
-               <span className="text-[10px] uppercase tracking-widest text-white/40">Luxury Digital Platform</span>
+            {/* Cinematic Progress Info */}
+            <div className="absolute bottom-12 right-24 z-20 hidden md:flex items-center gap-12">
+               <div className="flex flex-col items-end">
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-white/20 font-bold mb-2">Platform Progress</div>
+                  <div className="w-64 h-[1px] bg-white/10 relative">
+                     <motion.div 
+                       className="absolute inset-0 bg-white origin-left"
+                       style={{ scaleX: (index + 1) / items.length }}
+                     />
+                  </div>
+               </div>
+               <div className="text-2xl font-display font-bold text-white/40">0{index + 1}</div>
             </div>
           </div>
         ))}
